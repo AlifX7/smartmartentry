@@ -8,7 +8,10 @@
 // ============================================================================
 // 1. STATE & AUDIO SYNTHESIS
 // ============================================================================
-
+function gate(cmd){
+  if(window.parent !== window) window.parent.postMessage({smartmart:true, cmd}, "*");
+}
+gate("E");
 const AppState = {
   currentCustomer: {
     name: 'Pooja Nair',

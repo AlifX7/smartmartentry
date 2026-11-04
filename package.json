@@ -1,0 +1,19 @@
+{
+  "name": "smartmartentry",
+  "version": "1.0.0",
+  "description": "SmartMart AI — Entry Kiosk, Customer Sessions, QR Cards, and Owner Management Console",
+  "main": "index.html",
+  "scripts": {
+    "start": "node server.cjs",
+    "serve": "node server.cjs"
+  },
+  "keywords": [
+    "smartmart",
+    "autonomous-retail",
+    "qr-entry",
+    "computer-vision",
+    "turnstile"
+  ],
+  "author": "SmartMart AI Team",
+  "license": "MIT"
+}

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>SmartMart AI — Welcome</title>
+
+  <!-- PWA & Mobile WebApp Meta -->
+  <meta name="theme-color" content="#f8fafc" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+
+  <!-- Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brandBlue: '#2563eb',
+            brandGreen: '#059669',
+            brandYellow: '#f59e0b',
+            brandBlack: '#0f172a',
+            brandGrey: '#64748b'
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace']
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bg-slate-50 text-slate-900 h-[100dvh] flex flex-col justify-between p-4 sm:p-6 overflow-hidden">
+
+  <!-- ====================================================================== -->
+  <!-- 1. TOP MINIMAL HEADER (White, Blue, Grey, Black)                       -->
+  <!-- ====================================================================== -->
+  <header class="w-full max-w-sm mx-auto flex items-center justify-between pt-1">
+    <!-- Blue Store Icon + Black Brand Title -->
+    <div class="flex items-center gap-2.5">
+      <div class="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold shadow-sm shadow-blue-500/20">
+        <span class="material-symbols-outlined text-[20px]">storefront</span>
+      </div>
+      <div>
+        <div class="flex items-center gap-1.5">
+          <span class="font-extrabold text-sm tracking-tight text-slate-900">SmartMart AI</span>
+          <!-- Yellow Gold NFC Pill -->
+          <span class="inline-flex items-center gap-0.5 px-1.5 py-0.2 rounded text-[10px] font-mono font-bold bg-amber-100 text-amber-800 border border-amber-300">
+            <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
+            NFC
+          </span>
+        </div>
+        <span class="text-[11px] text-slate-500 font-medium">Autonomous Turnstile #01</span>
+      </div>
+    </div>
+
+    <!-- Sound Toggle Button (White, Grey border, Black icon) -->
+    <button onclick="toggleAudio()" class="w-8 h-8 rounded-xl bg-white border border-slate-200 shadow-sm flex items-center justify-center text-slate-600 hover:text-slate-900 transition-colors" title="Toggle Audio Chime">
+      <span id="sound-icon" class="material-symbols-outlined text-[18px]">volume_up</span>
+    </button>
+  </header>
+
+  <!-- ====================================================================== -->
+  <!-- 2. MAIN CENTER CARD: "WELCOME" THEN "ACCESS GRANTED"                   -->
+  <!-- ====================================================================== -->
+  <main class="w-full max-w-sm mx-auto my-auto">
+    <div class="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200 shadow-xl shadow-slate-200/50 flex flex-col items-center text-center relative overflow-hidden">
+      
+      <!-- Top Gold NFC Chip graphic (Yellow accent) -->
+      <div class="sim-chip" title="Simulated Gold Smart Card NFC Chip"></div>
+
+      <!-- Animated Multi-Color NFC Ripple & Center Orb (Blue / Green) -->
+      <div class="nfc-emitter-container my-1" onclick="triggerSequence()" title="Tap to replay sequence">
+        <div class="nfc-ripple-ring ripple-blue"></div>
+        <div class="nfc-ripple-ring ripple-green"></div>
+        <div class="nfc-ripple-ring ripple-yellow"></div>
+        <div id="central-nfc-orb" class="nfc-orb-center">
+          <span id="central-nfc-icon" class="material-symbols-outlined text-[38px] text-white transition-transform">
+            sensors
+          </span>
+        </div>
+      </div>
+
+      <!-- Acrylic Turnstile Mechanical Wings (Black Posts + Green Laser) -->
+      <div id="turnstile-gate-visual" class="turnstile-stage gate-open my-2">
+        <div class="gate-post"></div>
+        <div class="gate-wing gate-wing-left">
+          <span class="material-symbols-outlined text-[15px] text-emerald-600">arrow_back</span>
+        </div>
+        <div class="gate-portal-light"></div>
+        <div class="gate-wing gate-wing-right">
+          <span class="material-symbols-outlined text-[15px] text-emerald-600">arrow_forward</span>
+        </div>
+        <div class="gate-post"></div>
+      </div>
+
+      <!-- 2-STEP DYNAMIC SEQUENCE CONTAINER: "WELCOME" THEN "ACCESS GRANTED" -->
+      <div id="status-container" class="mt-3 space-y-2 w-full">
+
+        <!-- STEP 1: WELCOME BANNER (Bold Black & Blue) -->
+        <div id="step-welcome-box" class="anim-pop space-y-1">
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-200 text-xs font-bold">
+            <span class="material-symbols-outlined text-[15px]">waving_hand</span>
+            <span>Welcome in!</span>
+          </div>
+          <h1 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight leading-tight">
+            Welcome, <span id="customer-name-display" class="text-blue-600">Pooja Nair</span>!
+          </h1>
+          <p class="text-xs text-slate-500 font-medium">
+            Tap authenticated. Verifying turnstile gate...
+          </p>
+        </div>
+
+        <!-- STEP 2: ACCESS GRANTED BANNER (Vibrant Green & Black) -->
+        <div id="step-granted-box" class="hidden anim-pop space-y-1.5">
+          <!-- Green Access Granted Pill -->
+          <div class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300 text-xs font-black tracking-wide uppercase">
+            <span class="material-symbols-outlined text-[16px] text-emerald-600">check_circle</span>
+            <span>Access Granted</span>
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight leading-tight">
+            Turnstile Unlocked
+          </h2>
+          <p class="text-xs text-slate-600 font-medium max-w-xs mx-auto">
+            Please step through gate #01. Enjoy your autonomous shopping experience!
+          </p>
+          
+          <!-- Countdown Badge (White, Grey border, Green timer) -->
+          <div class="pt-1">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-slate-100 border border-slate-200 text-[11px] font-mono font-bold text-slate-700">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+              <span>GATE OPEN: <strong id="countdown-val" class="text-emerald-700 font-extrabold">6s</strong></span>
+            </span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Customer Pass / ID Badge (White, Grey border, Black text) -->
+      <div class="mt-4 pt-3 border-t border-slate-100 w-full flex items-center justify-between text-xs text-slate-500">
+        <span class="flex items-center gap-1 font-mono font-medium">
+          <span class="material-symbols-outlined text-[14px] text-blue-600">credit_card</span>
+          <span id="customer-id-display">SM-CUST-1001</span>
+        </span>
+        <!-- Yellow / Green Status Pill -->
+        <span id="pass-type-badge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+          SmartPass Active
+        </span>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ====================================================================== -->
+  <!-- 3. BOTTOM NFC IDENTITY TEST CHIPS (White, Blue, Green, Yellow, Grey)   -->
+  <!-- ====================================================================== -->
+  <footer class="w-full max-w-sm mx-auto pb-1">
+    <div class="bg-white rounded-2xl p-2.5 border border-slate-200 shadow-sm flex flex-col gap-1.5">
+      <div class="flex items-center justify-between text-[11px] text-slate-500 px-1">
+        <span class="font-bold flex items-center gap-1 text-slate-700">
+          <span class="material-symbols-outlined text-[14px] text-blue-600">contactless</span>
+          <span>NFC Tap Simulator</span>
+        </span>
+        <span class="text-[10px] text-slate-400 font-mono">Tap any customer</span>
+      </div>
+
+      <!-- Quick horizontal chips -->
+      <div class="flex items-center gap-1.5 overflow-x-auto chips-scroll py-0.5">
+        <!-- Blue Chip (Active Customer) -->
+        <button onclick="switchCustomer('Pooja Nair', 'SM-CUST-1001', 'SmartPass Active')" class="cust-chip px-2.5 py-1 rounded-xl bg-blue-600 text-white font-bold text-xs whitespace-nowrap shadow-sm">
+          Pooja Nair
+        </button>
+        <!-- White / Grey Chips -->
+        <button onclick="switchCustomer('Vikram Sethi', 'SM-CUST-1002', 'SmartPass Active')" class="cust-chip px-2.5 py-1 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs whitespace-nowrap">
+          Vikram Sethi
+        </button>
+        <button onclick="switchCustomer('Ananya Iyer', 'SM-CUST-1003', 'SmartPass Active')" class="cust-chip px-2.5 py-1 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs whitespace-nowrap">
+          Ananya Iyer
+        </button>
+        <button onclick="switchCustomer('Aarav Sharma', 'SM-CUST-1005', 'SmartPass Active')" class="cust-chip px-2.5 py-1 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs whitespace-nowrap">
+          Aarav Sharma
+        </button>
+        <!-- Yellow Chip (Guest Pass) -->
+        <button onclick="switchCustomer('Guest Shopper', 'GUEST-PASS', 'Guest Token')" class="cust-chip px-2.5 py-1 rounded-xl bg-amber-100 text-amber-900 border border-amber-300 font-bold text-xs whitespace-nowrap">
+          Guest Pass
+        </button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Application Logic -->
+  <script src="app.js"></script>
+</body>
+</html>

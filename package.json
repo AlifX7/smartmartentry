@@ -2,17 +2,15 @@
   "name": "smartmartentry",
   "version": "1.0.0",
   "description": "SmartMart AI — Mobile Minimal NFC Screen",
-  "main": "index.html",
   "scripts": {
     "build": "echo 'Static build ready'",
-    "start": "node server.cjs",
+    "dev": "node server.cjs",
     "serve": "node server.cjs",
     "test": "echo 'All tests passed'"
   },
   "keywords": [
     "smartmart",
     "autonomous-retail",
-    "qr-entry",
     "nfc-entry",
     "turnstile"
   ],

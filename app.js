@@ -25,10 +25,12 @@ let audioCtx = null;
 function getAudioContext() {
   if (!audioCtx) {
     const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-    if (AudioContextClass) audioCtx = new AudioContextClass();
+    if (AudioContextClass) {
+      try { audioCtx = new AudioContextClass(); } catch (e) {}
+    }
   }
   if (audioCtx && audioCtx.state === 'suspended') {
-    audioCtx.resume();
+    try { audioCtx.resume().catch(() => {}); } catch (e) {}
   }
   return audioCtx;
 }
@@ -137,9 +139,7 @@ function triggerSequence() {
 
   // Play initial NFC tap chime & haptic
   playNfcTapTone();
-  if (navigator.vibrate) {
-    navigator.vibrate([30, 40]);
-  }
+  try { if (navigator && navigator.vibrate) navigator.vibrate([30, 40]); } catch (e) {}
 
   // -------------------------------------------------------------
   // STAGE 2: TRANSITION TO "ACCESS GRANTED" (Green Phase)
@@ -160,9 +160,7 @@ function triggerSequence() {
 
     // Play gate unlock tone + second haptic confirmation
     playGateUnlockTone();
-    if (navigator.vibrate) {
-      navigator.vibrate([40, 80]);
-    }
+    try { if (navigator && navigator.vibrate) navigator.vibrate([40, 80]); } catch (e) {}
 
     // Start 6s Countdown
     startGateCountdown();

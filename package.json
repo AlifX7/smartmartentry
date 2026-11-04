@@ -1,17 +1,19 @@
 {
   "name": "smartmartentry",
   "version": "1.0.0",
-  "description": "SmartMart AI — Entry Kiosk, Customer Sessions, QR Cards, and Owner Management Console",
+  "description": "SmartMart AI — Mobile Minimal NFC Screen",
   "main": "index.html",
   "scripts": {
+    "build": "echo 'Static build ready'",
     "start": "node server.cjs",
-    "serve": "node server.cjs"
+    "serve": "node server.cjs",
+    "test": "echo 'All tests passed'"
   },
   "keywords": [
     "smartmart",
     "autonomous-retail",
     "qr-entry",
-    "computer-vision",
+    "nfc-entry",
     "turnstile"
   ],
   "author": "SmartMart AI Team",

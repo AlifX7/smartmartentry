@@ -1,6 +1,7 @@
 /* ==========================================================================
-   SmartMart AI — Mobile Minimal NFC Screen
+   SmartMart AI — Mobile Minimal NFC & QR Entrance Screen
    Colors: White, Blue, Green, Yellow, Black, Grey
+   Sleek Minimal Aesthetic, 3D Gate Physics & Fluid Micro-Animations
    ========================================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=JetBrains+Mono:wght@600;700&display=swap');
@@ -18,6 +19,7 @@
   --color-green-light: #ecfdf5;
   --color-yellow: #f59e0b;
   --color-yellow-light: #fefce8;
+  --color-red: #e11d48;
 }
 
 * {
@@ -31,15 +33,52 @@ html, body {
   height: 100%;
   height: 100dvh;
   overflow: hidden;
-}
-
-body {
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   background-color: var(--color-grey-bg);
   color: var(--color-black);
   user-select: none;
+}
+
+/* Ambient Subtle Beacon Glow */
+.ambient-beacon {
+  position: fixed;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 500px;
+  height: 350px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.12) 0%, rgba(5, 150, 105, 0.05) 50%, transparent 70%);
+  filter: blur(40px);
+  pointer-events: none;
+  z-index: 0;
+  transition: background 0.6s ease;
+}
+
+body.gate-unlocked .ambient-beacon {
+  background: radial-gradient(circle, rgba(5, 150, 105, 0.18) 0%, rgba(37, 99, 235, 0.06) 50%, transparent 70%);
+}
+
+/* Gold NFC Chip Simulation */
+.sim-chip {
+  width: 28px;
+  height: 20px;
+  border-radius: 4px;
+  background: linear-gradient(135deg, #fcd34d 0%, #f59e0b 50%, #d97706 100%);
+  border: 1px solid #b45309;
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.chip-line {
+  width: 14px;
+  height: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 2px;
 }
 
 /* --------------------------------------------------------------------------
@@ -82,7 +121,7 @@ body {
   0% {
     transform: scale(0.68);
     opacity: 0.95;
-    box-shadow: 0 0 16px currentColor;
+    box-shadow: 0 0 14px currentColor;
   }
   50% {
     opacity: 0.3;
@@ -94,8 +133,8 @@ body {
 }
 
 .nfc-orb-center {
-  width: 84px;
-  height: 84px;
+  width: 82px;
+  height: 82px;
   border-radius: 50%;
   background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
   box-shadow: 
@@ -107,86 +146,147 @@ body {
   position: relative;
   z-index: 10;
   cursor: pointer;
-  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: all 0.38s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.nfc-orb-center:hover {
+  transform: scale(1.05);
+}
+
+.nfc-orb-center:active {
+  transform: scale(0.93);
 }
 
 .nfc-orb-center.state-granted {
   background: linear-gradient(135deg, #059669 0%, #047857 100%);
   box-shadow: 
-    0 10px 25px -4px rgba(5, 150, 105, 0.4),
-    0 4px 10px -2px rgba(5, 150, 105, 0.2);
+    0 10px 25px -4px rgba(5, 150, 105, 0.45),
+    0 4px 10px -2px rgba(5, 150, 105, 0.25);
 }
 
-.nfc-orb-center:active {
-  transform: scale(0.92);
+.nfc-orb-center.state-denied {
+  background: linear-gradient(135deg, #e11d48 0%, #be123c 100%);
+  box-shadow: 
+    0 10px 25px -4px rgba(225, 29, 72, 0.45),
+    0 4px 10px -2px rgba(225, 29, 72, 0.25);
 }
 
-/* Gold NFC Chip Simulation */
-.sim-chip {
-  width: 24px;
-  height: 18px;
-  border-radius: 4px;
-  background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
-  border: 1px solid #b45309;
+/* QR Code Scan Stage */
+.qr-scanner-stage {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qr-target-frame {
+  width: 100px;
+  height: 100px;
+  background: #ffffff;
+  border-radius: 14px;
+  border: 2px solid #e2e8f0;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  position: relative;
+  overflow: hidden;
+}
+
+.qr-laser-beam {
   position: absolute;
-  top: 8px;
-  right: 12px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.12);
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #059669, #2563eb, transparent);
+  box-shadow: 0 0 8px #059669;
+  animation: laserScan 2s ease-in-out infinite alternate;
+}
+
+@keyframes laserScan {
+  0% { top: 4px; }
+  100% { top: 92px; }
 }
 
 /* --------------------------------------------------------------------------
-   2. TURNSTILE GATES (Black posts, Acrylic wings, Green pass beam)
+   2. 3D MECHANICAL TURNSTILE GATES (Black posts, Acrylic wings, Laser line)
    -------------------------------------------------------------------------- */
 
 .turnstile-stage {
   position: relative;
-  width: 240px;
+  width: 250px;
   height: 52px;
   margin: 6px auto 0;
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 10px;
+  justify-content: space-between;
+  perspective: 600px;
 }
 
 .gate-post {
-  width: 8px;
+  width: 10px;
   height: 48px;
-  border-radius: 4px;
-  background: #0f172a; /* Black */
-  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
-}
-
-.gate-wing {
-  width: 76px;
-  height: 38px;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.95); /* White */
-  border: 1.5px solid var(--color-grey-border); /* Grey */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-  position: relative;
-  transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  border-radius: 5px;
+  background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 10;
 }
 
-.gate-wing-left { transform-origin: left center; }
-.gate-wing-right { transform-origin: right center; }
+.post-led {
+  width: 3px;
+  height: 20px;
+  border-radius: 2px;
+  background: #f43f5e;
+  box-shadow: 0 0 6px #f43f5e;
+  transition: all 0.3s ease;
+}
 
-/* Open State */
+.gate-open .post-led {
+  background: #10b981;
+  box-shadow: 0 0 8px #10b981;
+}
+
+.gate-wing {
+  width: 78px;
+  height: 38px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1.5px solid var(--color-grey-border);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  position: relative;
+  transition: all 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+}
+
+.gate-wing-left {
+  transform-origin: left center;
+  transform: rotateY(0deg);
+}
+
+.gate-wing-right {
+  transform-origin: right center;
+  transform: rotateY(0deg);
+}
+
+/* Gate Open State */
 .gate-open .gate-wing-left {
-  transform: rotateY(-80deg) translateX(-8px);
-  border-color: #059669; /* Green */
+  transform: rotateY(-82deg) translateX(-6px);
+  border-color: #059669;
   background: rgba(236, 253, 245, 0.95);
-  box-shadow: 0 4px 14px rgba(5, 150, 105, 0.2);
+  box-shadow: 0 4px 14px rgba(5, 150, 105, 0.25);
 }
 
 .gate-open .gate-wing-right {
-  transform: rotateY(80deg) translateX(8px);
-  border-color: #059669; /* Green */
+  transform: rotateY(82deg) translateX(6px);
+  border-color: #059669;
   background: rgba(236, 253, 245, 0.95);
-  box-shadow: 0 4px 14px rgba(5, 150, 105, 0.2);
+  box-shadow: 0 4px 14px rgba(5, 150, 105, 0.25);
 }
 
 .gate-portal-light {
@@ -195,7 +295,7 @@ body {
   left: 18px;
   right: 18px;
   background: linear-gradient(90deg, transparent, #059669, #10b981, transparent);
-  box-shadow: 0 0 8px rgba(5, 150, 105, 0.5);
+  box-shadow: 0 0 10px rgba(5, 150, 105, 0.6);
   opacity: 0;
   transition: opacity 0.4s ease;
 }
@@ -204,17 +304,51 @@ body {
   opacity: 1;
 }
 
+.laser-arrows {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.gate-open .laser-arrows {
+  opacity: 1;
+}
+
+.arr {
+  width: 7px;
+  height: 7px;
+  border-top: 2px solid #059669;
+  border-right: 2px solid #059669;
+  transform: rotate(-45deg);
+  animation: arrowGlide 1.2s infinite ease-in-out;
+}
+
+.arr:nth-child(2) { animation-delay: 0.2s; }
+.arr:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes arrowGlide {
+  0% { opacity: 0.2; transform: rotate(-45deg) translate(-2px, 2px); }
+  50% { opacity: 1; transform: rotate(-45deg) translate(0, 0); }
+  100% { opacity: 0.2; transform: rotate(-45deg) translate(2px, -2px); }
+}
+
 /* --------------------------------------------------------------------------
    3. ANIMATED TRANSITION (Welcome -> Access Granted)
    -------------------------------------------------------------------------- */
 
 @keyframes popFade {
-  0% { transform: scale(0.92); opacity: 0; }
+  0% { transform: scale(0.93); opacity: 0; }
   100% { transform: scale(1); opacity: 1; }
 }
 
 .anim-pop {
-  animation: popFade 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: popFade 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 /* Minimal chip horizontal scroll without scrollbar */
@@ -224,4 +358,17 @@ body {
 .chips-scroll {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+.cust-chip {
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cust-chip:hover {
+  transform: translateY(-1px);
+}
+
+.cust-chip:active {
+  transform: scale(0.96);
 }

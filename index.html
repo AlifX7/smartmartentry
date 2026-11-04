@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <title>SmartMart AI — Welcome</title>
+  <title>SmartMart AI — Turnstile Entry</title>
 
   <!-- PWA & Mobile WebApp Meta -->
   <meta name="theme-color" content="#f8fafc" />
@@ -11,7 +11,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 
-  <!-- Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <!-- Fonts: Plus Jakarta Sans, JetBrains Mono & Google Material Symbols -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet" />
@@ -21,6 +21,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
+      darkMode: 'class',
       theme: {
         extend: {
           colors: {
@@ -39,75 +40,103 @@
     };
   </script>
 
-  <!-- Custom Stylesheet -->
+  <!-- Custom Production Stylesheet -->
   <link rel="stylesheet" href="style.css" />
 </head>
-<body class="bg-slate-50 text-slate-900 h-[100dvh] flex flex-col justify-between p-4 sm:p-6 overflow-hidden">
+<body class="bg-slate-50 text-slate-900 h-[100dvh] flex flex-col justify-between p-3.5 sm:p-5 overflow-hidden select-none transition-colors duration-300">
+
+  <!-- Ambient Light Effect -->
+  <div class="ambient-beacon"></div>
 
   <!-- ====================================================================== -->
-  <!-- 1. TOP MINIMAL HEADER (White, Blue, Grey, Black)                       -->
+  <!-- 1. TOP MINIMAL TELEMETRY & BRAND HEADER                                -->
   <!-- ====================================================================== -->
-  <header class="w-full max-w-sm mx-auto flex items-center justify-between pt-1">
-    <!-- Blue Store Icon + Black Brand Title -->
+  <header class="w-full max-w-sm mx-auto flex items-center justify-between pt-1 relative z-20">
+    <!-- Storefront Brand Mark -->
     <div class="flex items-center gap-2.5">
-      <div class="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold shadow-sm shadow-blue-500/20">
+      <div class="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold shadow-md shadow-blue-500/25 transition-transform hover:scale-105">
         <span class="material-symbols-outlined text-[20px]">storefront</span>
       </div>
       <div>
         <div class="flex items-center gap-1.5">
-          <span class="font-extrabold text-sm tracking-tight text-slate-900">SmartMart AI</span>
-          <!-- Yellow Gold NFC Pill -->
-          <span class="inline-flex items-center gap-0.5 px-1.5 py-0.2 rounded text-[10px] font-mono font-bold bg-amber-100 text-amber-800 border border-amber-300">
+          <span class="font-black text-sm tracking-tight text-slate-900">SmartMart AI</span>
+          <!-- Gold NFC Pill -->
+          <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-100 text-amber-900 border border-amber-300/80 shadow-xs">
             <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
             NFC
           </span>
         </div>
-        <span class="text-[11px] text-slate-500 font-medium">Autonomous Turnstile #01</span>
+        <div class="flex items-center gap-1.5 text-[11px] text-slate-500 font-medium">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+          <span>Turnstile Gate #01 • Online</span>
+        </div>
       </div>
     </div>
 
-    <!-- Sound Toggle Button (White, Grey border, Black icon) -->
-    <button onclick="toggleAudio()" class="w-8 h-8 rounded-xl bg-white border border-slate-200 shadow-sm flex items-center justify-center text-slate-600 hover:text-slate-900 transition-colors" title="Toggle Audio Chime">
-      <span id="sound-icon" class="material-symbols-outlined text-[18px]">volume_up</span>
-    </button>
+    <!-- Quick Action Controls (Sound, Fullscreen) -->
+    <div class="flex items-center gap-1.5">
+      <button onclick="toggleAudio()" class="w-8 h-8 rounded-xl bg-white border border-slate-200/90 shadow-xs flex items-center justify-center text-slate-600 hover:text-slate-900 hover:border-slate-300 transition-all active:scale-95" title="Toggle Sound FX (Key: M)">
+        <span id="sound-icon" class="material-symbols-outlined text-[18px]">volume_up</span>
+      </button>
+      <button onclick="toggleFullScreen()" class="w-8 h-8 rounded-xl bg-white border border-slate-200/90 shadow-xs flex items-center justify-center text-slate-600 hover:text-slate-900 hover:border-slate-300 transition-all active:scale-95" title="Toggle Fullscreen (Key: F)">
+        <span class="material-symbols-outlined text-[18px]">fullscreen</span>
+      </button>
+    </div>
   </header>
 
   <!-- ====================================================================== -->
   <!-- 2. MAIN CENTER CARD: "WELCOME" THEN "ACCESS GRANTED"                   -->
   <!-- ====================================================================== -->
-  <main class="w-full max-w-sm mx-auto my-auto">
-    <div class="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200 shadow-xl shadow-slate-200/50 flex flex-col items-center text-center relative overflow-hidden">
+  <main class="w-full max-w-sm mx-auto my-auto relative z-10">
+    <div id="main-gate-card" class="bg-white/95 backdrop-blur-md rounded-3xl p-5 sm:p-6 border border-slate-200/90 shadow-xl shadow-slate-200/60 flex flex-col items-center text-center relative overflow-hidden transition-all duration-300">
       
       <!-- Top Gold NFC Chip graphic (Yellow accent) -->
-      <div class="sim-chip" title="Simulated Gold Smart Card NFC Chip"></div>
+      <div class="sim-chip" title="Simulated Gold Smart Card NFC Chip">
+        <div class="chip-line"></div>
+      </div>
 
-      <!-- Animated Multi-Color NFC Ripple & Center Orb (Blue / Green) -->
-      <div class="nfc-emitter-container my-1" onclick="triggerSequence()" title="Tap to replay sequence">
+      <!-- STAGE 1: Animated Multi-Color NFC Sonar Waves & Center Orb -->
+      <div id="nfc-emitter" class="nfc-emitter-container my-2 cursor-pointer" onclick="triggerSequence()" title="Tap to Authenticate / Replay Sequence">
         <div class="nfc-ripple-ring ripple-blue"></div>
         <div class="nfc-ripple-ring ripple-green"></div>
         <div class="nfc-ripple-ring ripple-yellow"></div>
         <div id="central-nfc-orb" class="nfc-orb-center">
-          <span id="central-nfc-icon" class="material-symbols-outlined text-[38px] text-white transition-transform">
+          <span id="central-nfc-icon" class="material-symbols-outlined text-[36px] text-white transition-all duration-300">
             sensors
           </span>
         </div>
       </div>
 
-      <!-- Acrylic Turnstile Mechanical Wings (Black Posts + Green Laser) -->
+      <!-- 3D Mechanical Turnstile Wings (Acrylic Wings + LED Status + Floor Laser) -->
       <div id="turnstile-gate-visual" class="turnstile-stage gate-open my-2">
-        <div class="gate-post"></div>
+        <!-- Left Post -->
+        <div class="gate-post">
+          <div class="post-led"></div>
+        </div>
+        <!-- Left Wing -->
         <div class="gate-wing gate-wing-left">
           <span class="material-symbols-outlined text-[15px] text-emerald-600">arrow_back</span>
         </div>
-        <div class="gate-portal-light"></div>
+        <!-- Center Guidance Laser Beam -->
+        <div class="gate-portal-light">
+          <div class="laser-arrows">
+            <span class="arr"></span>
+            <span class="arr"></span>
+            <span class="arr"></span>
+          </div>
+        </div>
+        <!-- Right Wing -->
         <div class="gate-wing gate-wing-right">
           <span class="material-symbols-outlined text-[15px] text-emerald-600">arrow_forward</span>
         </div>
-        <div class="gate-post"></div>
+        <!-- Right Post -->
+        <div class="gate-post">
+          <div class="post-led"></div>
+        </div>
       </div>
 
       <!-- 2-STEP DYNAMIC SEQUENCE CONTAINER: "WELCOME" THEN "ACCESS GRANTED" -->
-      <div id="status-container" class="mt-3 space-y-2 w-full">
+      <div id="status-container" class="mt-2 space-y-1.5 w-full">
 
         <!-- STEP 1: WELCOME BANNER (Bold Black & Blue) -->
         <div id="step-welcome-box" class="anim-pop space-y-1">
@@ -119,14 +148,14 @@
             Welcome, <span id="customer-name-display" class="text-blue-600">Pooja Nair</span>!
           </h1>
           <p class="text-xs text-slate-500 font-medium">
-            Tap authenticated. Verifying turnstile gate...
+            Tap authenticated. Unlocking turnstile gate...
           </p>
         </div>
 
         <!-- STEP 2: ACCESS GRANTED BANNER (Vibrant Green & Black) -->
         <div id="step-granted-box" class="hidden anim-pop space-y-1.5">
           <!-- Green Access Granted Pill -->
-          <div class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300 text-xs font-black tracking-wide uppercase">
+          <div class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300 text-xs font-black tracking-wide uppercase shadow-xs">
             <span class="material-symbols-outlined text-[16px] text-emerald-600">check_circle</span>
             <span>Access Granted</span>
           </div>
@@ -137,26 +166,43 @@
             Please step through gate #01. Enjoy your autonomous shopping experience!
           </p>
           
-          <!-- Countdown Badge (White, Grey border, Green timer) -->
-          <div class="pt-1">
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-slate-100 border border-slate-200 text-[11px] font-mono font-bold text-slate-700">
-              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+          <!-- Animated Countdown Badge with Circular Ring -->
+          <div class="pt-1 flex justify-center">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-xl bg-slate-100 border border-slate-200 text-[11px] font-mono font-bold text-slate-700 shadow-2xs">
+              <span class="relative flex h-2 w-2">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span class="relative flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
               <span>GATE OPEN: <strong id="countdown-val" class="text-emerald-700 font-extrabold">6s</strong></span>
-            </span>
+            </div>
           </div>
+        </div>
+
+        <!-- STEP 3: ACCESS DENIED BANNER (Red Error State) -->
+        <div id="step-denied-box" class="hidden anim-pop space-y-1.5">
+          <div class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-rose-100 text-rose-800 border border-rose-300 text-xs font-black tracking-wide uppercase">
+            <span class="material-symbols-outlined text-[16px] text-rose-600">cancel</span>
+            <span>Access Denied</span>
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-black text-rose-600 tracking-tight leading-tight">
+            Turnstile Locked
+          </h2>
+          <p class="text-xs text-slate-600 font-medium max-w-xs mx-auto">
+            Unrecognized card or pass expired. Please contact store assistant.
+          </p>
         </div>
 
       </div>
 
-      <!-- Customer Pass / ID Badge (White, Grey border, Black text) -->
-      <div class="mt-4 pt-3 border-t border-slate-100 w-full flex items-center justify-between text-xs text-slate-500">
+      <!-- Customer Pass / ID Badge Strip -->
+      <div class="mt-3.5 pt-3 border-t border-slate-100 w-full flex items-center justify-between text-xs text-slate-500">
         <span class="flex items-center gap-1 font-mono font-medium">
           <span class="material-symbols-outlined text-[14px] text-blue-600">credit_card</span>
           <span id="customer-id-display">SM-CUST-1001</span>
         </span>
-        <!-- Yellow / Green Status Pill -->
-        <span id="pass-type-badge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
-          SmartPass Active
+        <!-- Pass Tier Badge -->
+        <span id="pass-type-badge" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+          SmartPass Prime VIP
         </span>
       </div>
 
@@ -166,35 +212,39 @@
   <!-- ====================================================================== -->
   <!-- 3. BOTTOM NFC IDENTITY TEST CHIPS (White, Blue, Green, Yellow, Grey)   -->
   <!-- ====================================================================== -->
-  <footer class="w-full max-w-sm mx-auto pb-1">
-    <div class="bg-white rounded-2xl p-2.5 border border-slate-200 shadow-sm flex flex-col gap-1.5">
+  <footer class="w-full max-w-sm mx-auto pb-1 relative z-20">
+    <div class="bg-white/95 backdrop-blur-md rounded-2xl p-2.5 border border-slate-200/90 shadow-sm flex flex-col gap-1.5">
       <div class="flex items-center justify-between text-[11px] text-slate-500 px-1">
         <span class="font-bold flex items-center gap-1 text-slate-700">
           <span class="material-symbols-outlined text-[14px] text-blue-600">contactless</span>
           <span>NFC Tap Simulator</span>
         </span>
-        <span class="text-[10px] text-slate-400 font-mono">Tap any customer</span>
+        <span class="text-[10px] text-slate-400 font-mono">Tap any persona</span>
       </div>
 
-      <!-- Quick horizontal chips -->
+      <!-- Quick horizontal persona chips -->
       <div class="flex items-center gap-1.5 overflow-x-auto chips-scroll py-0.5">
-        <!-- Blue Chip (Active Customer) -->
-        <button onclick="switchCustomer('Pooja Nair', 'SM-CUST-1001', 'SmartPass Active')" class="cust-chip px-2.5 py-1 rounded-xl bg-blue-600 text-white font-bold text-xs whitespace-nowrap shadow-sm">
+        <!-- Blue Chip (Active VIP Customer) -->
+        <button onclick="switchCustomer('Pooja Nair', 'SM-CUST-1001', 'SmartPass Prime VIP', true)" class="cust-chip active px-2.5 py-1 rounded-xl bg-blue-600 text-white font-bold text-xs whitespace-nowrap shadow-xs">
           Pooja Nair
         </button>
-        <!-- White / Grey Chips -->
-        <button onclick="switchCustomer('Vikram Sethi', 'SM-CUST-1002', 'SmartPass Active')" class="cust-chip px-2.5 py-1 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs whitespace-nowrap">
+        <!-- Standard Members -->
+        <button onclick="switchCustomer('Vikram Sethi', 'SM-CUST-1002', 'Express Member', true)" class="cust-chip px-2.5 py-1 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs whitespace-nowrap">
           Vikram Sethi
         </button>
-        <button onclick="switchCustomer('Ananya Iyer', 'SM-CUST-1003', 'SmartPass Active')" class="cust-chip px-2.5 py-1 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs whitespace-nowrap">
-          Ananya Iyer
+        <button onclick="switchCustomer('Ananya Iyer', 'SM-STAFF-004', 'Staff Master Key', true)" class="cust-chip px-2.5 py-1 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs whitespace-nowrap">
+          Ananya (Staff)
         </button>
-        <button onclick="switchCustomer('Aarav Sharma', 'SM-CUST-1005', 'SmartPass Active')" class="cust-chip px-2.5 py-1 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs whitespace-nowrap">
+        <button onclick="switchCustomer('Aarav Sharma', 'SM-CUST-1005', 'SmartPass Active', true)" class="cust-chip px-2.5 py-1 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs whitespace-nowrap">
           Aarav Sharma
         </button>
         <!-- Yellow Chip (Guest Pass) -->
-        <button onclick="switchCustomer('Guest Shopper', 'GUEST-PASS', 'Guest Token')" class="cust-chip px-2.5 py-1 rounded-xl bg-amber-100 text-amber-900 border border-amber-300 font-bold text-xs whitespace-nowrap">
+        <button onclick="switchCustomer('Guest Shopper', 'GUEST-PASS-99', 'Guest Token (1hr)', true)" class="cust-chip px-2.5 py-1 rounded-xl bg-amber-100 text-amber-900 border border-amber-300 font-bold text-xs whitespace-nowrap">
           Guest Pass
+        </button>
+        <!-- Red Chip (Expired Card Test) -->
+        <button onclick="switchCustomer('Blocked Card', 'REVOKED-00', 'Inactive / Denied', false)" class="cust-chip px-2.5 py-1 rounded-xl bg-rose-100 text-rose-800 border border-rose-300 font-bold text-xs whitespace-nowrap">
+          Invalid Card
         </button>
       </div>
     </div>
